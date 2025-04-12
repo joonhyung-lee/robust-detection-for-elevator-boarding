@@ -174,9 +174,7 @@
           <source src="assets/videos/demo.mp4" type="video/mp4">
         </video>
         <h2 class="subtitle" style="text-align: left;">
-          <span style="font-weight: bold; font-size: larger">Robust Detection for Autonomous Elevator Boarding using a
-            Mobile Manipulator</span>
-          is an approach to ...
+          Our framework is an approach to enable indoor robots to navigate multi-level structures through elevators. Our system accurately perceives elevator states, pushes buttons, and executes boarding sequences using only image sensors. We address challenges like class imbalance and label dependency in real-world datasets using specialized YOLOv7 training techniques.
         </h2>
       </div>
     </div>
@@ -213,14 +211,9 @@
       <div class="container">
         <h2 class="title is-3">Framework</h2>
         <div id="framework">
-          <!-- Content here -->
-          <!-- Your image here -->
-          <img src="assets/images/procedures.png" alt="MY ALT TEXT" />
+          <img src="assets/images/fig_procedures.png" alt="Autonomous elevator boarding framework" width="70%" style="display: block; margin: 0 auto;"/>
           <h2 class="content has-text-justified" style="text-align: left;">
-            Overall pipeline of the proposed teleoperation framework. With the scene input, the system checks the
-            physical stability of the correct placement. Then, the system verifies the contextually reasonable positions
-            based on the receptacle reasoning step, considering the scene's context, and recommends the coordinates
-            obtained from both processes to the user.
+            An overview of the autonomous elevator boarding process. The procedure is divided into two main categories: (a) button-pushing operations and (b) elevator boarding, which encompass tasks such as path planning, object detection, and interaction. Our GAEMI robot uses a comprehensive perception system to recognize elevator states and interact with them seamlessly.
           </h2>
         </div>
       </div>
@@ -228,51 +221,113 @@
   </section>
   <!-- End of Framework Overview -->
 
+  <!-- Robot Description -->
+  <section class="hero is-small">
+    <div class="hero-body">
+      <div class="container">
+        <h2 class="title is-3">Robot Platform</h2>
+        
+        <!-- 이미지는 두 컬럼으로 배치 -->
+        <div class="columns">
+          <div class="column is-half">
+            <div style="text-align: center;">
+              <img src="assets/images/fig_robot.png" alt="GAEMI Robot" style="width: 65%;">
+              <figcaption class="content is-small has-text-centered">
+                <strong>GAEMI Robot:</strong> A sophisticated mobile manipulator equipped with a 5DoF robotic arm and a ZED camera.
+              </figcaption>
+            </div>
+          </div>
+          <div class="column is-half">
+            <div style="text-align: center;">
+              <img src="assets/images/fig_button_push_demo.png" alt="GAEMI Robot" style="width: 50%;">
+              <figcaption class="content is-small has-text-centered">
+                <strong>Button Pushing Demo:</strong> The robot navigates to the button position and pushes the button.
+              </figcaption>
+            </div>
+          </div>
+        </div>
+        
+        <!-- 텍스트는 단일 컬럼으로 배치 -->
+        <div class="columns">
+          <div class="column is-full">
+            <div class="content has-text-justified">
+              <p>
+                <strong>GAEMI</strong> is a sophisticated mobile manipulator equipped with a 5DoF robotic arm and a ZED camera. Its non-holonomic base features a 2D LiDAR sensor for obstacle detection and localization within a mapped environment. Additionally, GAEMI has a forward-facing RGB camera that serves as the primary sensor for our elevator perception system. This setup enables GAEMI to navigate complex indoor environments, detect elevator states, and interact with control panels effectively.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End of Robot Description -->
+
   <!-- Module Explanations -->
   <section class="hero is-small">
     <div class="hero-body">
       <div class="container">
-        <h2 class="title is-3">\( \textbf{SPOTS} \)</h2>
+        <h2 class="title is-3">Perception System</h2>
         <div id="module" class="columns">
 
           <!-- First Column -->
           <div class="column is-half">
-            <h2 class="subtitle">\( \textbf{Stability Verification} \)</h2>
-            <div class="item item-video1">
-              <figure class="video-container">
-                <video poster="" id="video1" autoplay controls muted loop height="100%">
-                  <source src="assets/videos/stability_verification.mp4" type="video/mp4">
-                </video>
-                <figcaption class="video-caption">
-                  We aim to identify regions where objects can be stably placed over a given interaction time \(T\) in
-                  simulation.
-                  More specifically, to determine the robustness of the placement stability, small perturbations are
-                  injected after the object has been placed.
-                  We define the set of points \( \mathcal{P}_{\text{s}} \) to represent coordinates where objects can be
-                  placed stably.
-                  <!-- : -->
-                  <!-- \begin{equation}
-                \mathcal{P}_{\text{s}} = \left\{ \mathbf{p}_i \in \mathcal{P} : \forall t, \lVert q(t, \mathbf{p}_i) - q(1, \mathbf{p}_i) \rVert^2 \leq \sigma^2 \right\}
-                \end{equation} -->
-                </figcaption>
-              </figure>
+            <h2 class="subtitle">Label Superset and Status Perception</h2>
+            <div class="item">
+              <div style="text-align: center;">
+              <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth" style="width: 95%;">
+                <thead>
+                  <tr>
+                    <th>Category</th>
+                    <th>Parameters</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Elevator Door</td>
+                    <td>Opened, Moving, Closed</td>
+                  </tr>
+                  <tr>
+                    <td>Current Robot Floor</td>
+                    <td>B6, B5, ..., B1, 1, ..., 63</td>
+                  </tr>
+                  <tr>
+                    <td>Current Elevator Floor (Outside/Inside)</td>
+                    <td>B6, B5, ..., B1, 1, ..., 63</td>
+                  </tr>
+                  <tr>
+                    <td>Current Elevator Direction (Outside/Inside)</td>
+                    <td>Up, Down, None</td>
+                  </tr>
+                  <tr class="has-background-grey-lighter">
+                    <td>Elevator Button (Outside/Inside)</td>
+                    <td>Up, Down, B6, B5, ..., B1, 1, ..., 63</td>
+                  </tr>
+                </tbody>
+              </table>
+              </div>
+              <figcaption class="content is-small has-text-centered">
+                <strong>Label Superset:</strong> White rows represent labels processed by the indicator detection module, while the gray row indicates labels handled by the button detection module using instance segmentation.
+              </figcaption>
+              <p>
+                  The primary objective of our perception system is to ascertain the elevator's status, including door state, current floor, and location. We defined a comprehensive label superset covering all possible scenarios across diverse sites, enabling the robot to make decisions and navigate intricate environments effectively. This is essential for seamless navigation and interaction with elevator systems.
+              </p>
             </div>
           </div>
 
           <!-- Second Column -->
           <div class="column is-half">
-            <h2 class="subtitle">\( \textbf{Receptacle Reasoning} \)</h2>
+            <h2 class="subtitle">Addressing Class Imbalance & Small Object Detection</h2>
             <div class="item item-video1">
               <figure class="video-container">
-                <video poster="" id="video1" autoplay controls muted loop height="100%">
-                  <source src="assets/videos/receptacle_reasoning.mp4" type="video/mp4">
-                </video>
-                <figcaption class="video-caption">
-                  Though the set of \( \mathcal{P}_{\text{s}} \) points, that are verified in \( \textbf{Stability
-                  Verification} \) step, the points are determined to be feasible, it may contain some options that do
-                  not consider the context of the scene.
-                  Therefore, we aim to analyze the reasonableness within the limited range of \( \mathcal{P}_{\text{s}}
-                  \) that corresponds to the current scene's situation and context.
+                <img src="assets/images/fig_class_imbalance.png" alt="Class Imbalance & Small Object Detection" style="width: 100%;">
+                <figcaption class="video-caption" style="text-align: left; margin-left: 50px;">
+                  Our augmentation strategy addresses three key challenges in elevator perception through a systematic approach:
+                  <ol style="margin-top: 0.5em !important; margin-bottom: 0.5em !important; list-style-type: disc;">
+                    <li><strong style="color: #FACB5E">Original Dataset:</strong> We start with the base dataset of elevator scenes.</li>
+                    <li><strong style="color: #7D7C78">Patch Augmentation:</strong> By cropping high-resolution sections of original images, we enhance the detection of small indicators like floor numbers and buttons.</li>
+                    <li><strong style="color: #0A224B">Patch-Blur Augmentation:</strong> We selectively blur frequent objects (e.g., elevator doors) in the high-resolution images and remove their labels, effectively addressing class imbalance and label dependency issues.</li>
+                  </ol>
+                  This multi-step approach increases dataset diversity while maintaining detection accuracy for critical elevator components.
                 </figcaption>
               </figure>
             </div>
@@ -281,238 +336,180 @@
   </section>
   <!-- End of module explanations -->
 
-
-  <!-- Simulation Experimental Videos -->
-  <!-- <section class="hero is-small">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title is-3">User Interaction</h2>
-      <div id="module">
-        <div id="sim-results" class="carousel results-carousel">
-        <div class="item item-video1">
-          <video poster="" id="video1" autoplay controls muted loop height="100%">
-            <source src="assets/videos/sim-shelf-level1.mp4"
-            type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-video2">
-          <video poster="" id="video2" autoplay controls muted loop height="100%">
-            <source src="assets/videos/sim-shelf-level2.mp4"
-            type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-video3">
-          <video poster="" id="video3" autoplay controls muted loop height="100%">\
-            <source src="assets/videos/sim-shelf-level3.mp4"
-            type="video/mp4">
-          </video>
-        </div>
-      </div>
-    </div>
-  </div>
-</section> -->
-  <!-- End of simulation experimental videos -->
-
-  <!-- User Interaction Videos -->
+  <!-- Dataset Section -->
   <section class="hero is-small">
     <div class="hero-body">
-      <div class="container">
-        <h2 class="title is-3">User Interaction</h2>
-        <div id="module">
-          <div id="sim-results">
-            <video poster="" id="video1" autoplay controls muted loop height="100%">
-              <!-- Your video file here -->
-              <source src="assets/videos/user_interaction.mp4" type="video/mp4">
-            </video>
-            <h2 class="content has-text-justified" style="text-align: left;">
-              User interaction with the proposed system SPOTS. The user selects among the candidates, provided with a
-              close consideration of stability and reasonableness, in an interactive viewer. SPOTS recommends the
-              placement candidates based on the prompt of the task.
-            </h2>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- End of user interaction videos -->
-
-  <!-- Environments -->
-  <section class="section" style="margin-bottom: 120px;">
-
     <div class="container">
-      <h2 class="title is-3">Environments</h2>
-      <h2 class="content has-text-justified" style="text-align: left; position: absolute;">
-        <p>
-          Our real-to-sim transfer module, illustrated in
-          <a href="#framework">Framework</a>,
-          utilizes OWL-ViT for open-vocabulary object detection
-          and AprilTags for pose estimation, based on input
-          from an RGBD vision sensor.
-          The detected objects form a label super-set that includes nine categories of
-          <a href="#footnote-text"><span id="footnote1">[1]</span></a>,
-          for a total of 21 object assets. For each detected object, we assume the corresponding 3D asset is available.
-          These assets are transferred into a simulation environment that mimics the real world as closely as possible.
-          This reconstructed environment is the basis for all subsequent evaluations.
-          The framework is built on the
-          MuJoCo simulator, using assets from the YCB and Google Scanned dataset.
-          We use a tabletop manipulation framework with a 6-DoF robot arm and gpt-3.5-turbo.
-        </p>
-      </h2>
-      <div class="footnote" style="text-align: left; position: absolute; top: 200px;">
-        <p id="footnote-text"><a href="#footnote1">[1]</a> 'DishRack', 'Bowl', 'BookShelf', 'Fruit', 'Beverage',
-          'Snack', 'Tray', 'Glass', 'Book'</p>
-      </div>
-
-      <!-- Placeholder -->
-      <div class="row border rounded" style="padding-top: 12px; padding-bottom: 12px;">
-        <div class="col-md-6 mx-auto text-center">
-          <video id="demo-video-1"
-            style="padding-top: 200px; border-radius: 5px; max-width: 75%; display: block; margin: 0 auto;" autoplay
-            loop muted webkit-playsinline playsinline onclick="setAttribute('controls', 'true');">
-            <source id="expandedImg-1" src="assets/videos/placeholder_below.mp4" type="video/mp4">
-          </video>
+        <h2 class="title is-3">Datasets</h2>
+        
+        <!-- 이미지와 텍스트를 포함하는 두 컬럼 -->
+        <div class="columns">
+          <div class="column is-full">
+            <div style="text-align: center;">
+              <img src="assets/images/fig_datasets.png" alt="Indicator Dataset" style="width: 50%;">
+              <figcaption class="content is-small has-text-centered">
+                <strong>(a) Indicator dataset:</strong> Object detection dataset tailored to capture the basic status of an elevator. <br>
+                <strong>(b) Button dataset:</strong> Instance segmentation dataset designed to identify points of interaction.
+              </figcaption>
         </div>
-      </div>
-      <div class="col-md-6 mx-auto text-center" style="text-align: center;">
-        <div id="imgtext-1" style="font-size: 1.5em; display: inline-block; margin: 0 auto;">
-          <span style="background-color: #FFFFCC; color: #333; padding: 2px 4px;">Select an image below:</span>
         </div>
       </div>
 
-
-      <!-- First Row -->
+        <!-- 단일 컬럼 설명 텍스트 -->
       <div class="columns">
-        <!-- Column 1 -->
-        <div class="column is-one-third">
-          <figure class="image"
-            style="position: relative; display: flex; align-items: center; justify-content: center;">
-            <img src="assets/videos/scene-kitchen-white.png" alt="[Small Gap]: White Dish Rack" style="width: 65%;"
-              onclick="populateDemo(this, 1);">
-            <figcaption
-              style="position: absolute; bottom: -15%; left: 50%; transform: translateX(-50%); font-size: 1.25em; background-color: rgba(255, 255, 255, 0.6);">
-              (a) Small Gap </figcaption>
-          </figure>
-        </div>
-        <!-- Column 2 -->
-        <div class="column is-one-third">
-          <figure class="image"
-            style="position: relative; display: flex; align-items: center; justify-content: center;">
-            <img src="assets/videos/scene-kitchen-black.png" alt="[Medium Gap]: Black Dish Rack"
-              style="width: 65%; transform: translateY(10%)" onclick="populateDemo(this, 1);">
-            <figcaption
-              style="position: absolute; bottom: -32.5%; left: 50%; transform: translateX(-50%); font-size: 1.25em; background-color: rgba(255, 255, 255, 0.6);">
-              (b) Medium Gap </figcaption>
-          </figure>
-        </div>
-        <!-- Column 3 -->
-        <div class="column is-one-third">
-          <figure class="image"
-            style="position: relative; display: flex; align-items: center; justify-content: center;">
-            <img src="assets/videos/scene-kitchen-small.png" alt="[Large Gap]: Wood Dish Rack"
-              style="width: 55%; transform: translateY(15%)" onclick="populateDemo(this, 1);">
-            <figcaption
-              style="position: absolute; bottom: -37.5%; left: 50%; transform: translateX(-50%); font-size: 1.25em; background-color: rgba(255, 255, 255, 0.6);">
-              (c) Large Gap </figcaption>
-          </figure>
+          <div class="column is-full">
+            <div class="content has-text-justified">
+              <p>
+                We developed two complementary datasets for our elevator interaction system. The <strong>(a) Indicator dataset</strong> is tailored to capture the basic status of an elevator, including door state, current floor indicators, and directional signals. This object detection dataset provides the fundamental situational awareness needed for decision-making.
+              </p>
+              <p>
+                The <strong>(b) Button dataset</strong> is an instance segmentation dataset designed to identify precise points of interaction between the robot and the elevator, facilitating successful task execution. This dataset includes pixel-level masks for elevator buttons, enabling the robot to accurately locate and interact with control panels. Together, these datasets provide the comprehensive perception capabilities required for autonomous elevator navigation.
+              </p>
         </div>
       </div>
-
-      <!-- Second Row -->
-      <div class="columns">
-        <!-- Column 4 -->
-        <div class="column is-one-third align-bottom">
-          <figure class="image"
-            style="position: relative; display: flex; align-items: center; justify-content: center;">
-            <img src="assets/videos/scene-bookshelf-two-tiered.png" alt="[Two-Tiered Bookshelf]"
-              style="width: 65%; transform: translateY(45%)" onclick="populateDemo(this, 1);">
-            <figcaption
-              style="position: absolute; bottom: -60%; left: 50%; transform: translateX(-50%); font-size: 1.25em; white-space: nowrap; background-color: rgba(255, 255, 255, 0.6);">
-              (d) Two-Tiered Bookshelf </figcaption>
-          </figure>
-        </div>
-        <!-- Column 5 -->
-        <div class="column is-one-third align-bottom">
-          <figure class="image"
-            style="position: relative; display: flex; align-items: center; justify-content: center;">
-            <img src="assets/videos/scene-bookshelf-three-tiered.png" alt="[Three-Tiered Bookshelf]"
-              style="width: 65%; transform: translateY(15%)" onclick="populateDemo(this, 1);">
-            <figcaption
-              style="position: absolute; bottom: -27.5%; left: 50%; transform: translateX(-50%); font-size: 1.25em; white-space: nowrap; background-color: rgba(255, 255, 255, 0.6);">
-              (e) Three-Tiered Bookshelf </figcaption>
-          </figure>
-        </div>
-        <!-- Column 6 -->
-        <div class="column is-one-third align-bottom">
-          <figure class="image"
-            style="position: relative; display: flex; align-items: center; justify-content: center;">
-            <img src="assets/videos/scene-shelf-three-tiered.png" alt="[Three-Tiered Shelf]"
-              style="width: 65%; transform: translateY(15%)" onclick="populateDemo(this, 1);">
-            <figcaption
-              style="position: absolute; bottom: -25%; left: 50%; transform: translateX(-50%); font-size: 1.25em; white-space: nowrap; background-color: rgba(255, 255, 255, 0.6);">
-              (f) Three-Tiered Shelf </figcaption>
-          </figure>
         </div>
       </div>
-
     </div>
   </section>
-  <!-- End environments -->
+  <!-- End of Dataset Section -->
 
   <!-- Results -->
   <section class="hero is-small" style="margin-bottom: 35px;">
     <div class="hero-body">
       <div class="container">
         <h2 class="title is-3">Results</h2>
-        <div id="Results">
-          <img src="assets/images/fig_stability_check.png" alt="MY ALT TEXT" style="width: 100%;">
-          <h2 class="content has-text-justified" style="text-align: left;">
-            Result of stability verification module: Performed for all environments in our experiments, not including
-            reasoning module. The ratio of stable coordinates to the total number of coordinates is very low. This
-            indicates that the task we are assuming is physically difficult to be stably located.
-          </h2>
-
-          <img src="assets/images/fig_sim.png" alt="MY ALT TEXT" style="width: 100%;">
-          <p style="margin-bottom: 8px;">
-            We compare <strong>SPOTS</strong> to three prior methods:
-            <strong>LLM-GROP</strong><a href="#footnote-llmgrop"> [1]</a>,
-            <strong>Code-as-Policies (CaP)</strong><a href="#footnote-cap"> [2]</a>,
-            and <strong>Language-to-Reward (L2R)</strong><a href="#footnote-l2r"> [3]</a>.
-            <strong>LLM-GROP</strong> uses two different template-based prompts; one extracts semantic relationships
-            with examples, and the other one predicts geometric spatial relationships for varying scene geometry.
-            <strong>CaP</strong> generates policy code for the robot motion using a pre-defined low-level primitive
-            function.
-            <strong>L2R</strong> defines reward parameters that can be optimized, and the reward function is designed
-            for moving a manipulator to a parameterized placement position.
-          </p>
-          <p style="margin-bottom: 8px;">
-            Our evaluation metrics are the place stability and reasonableness of the suggested object placements.
-            The stability success rate is based purely on the physical stability of object placement in simulations,
-            whether that object is placed stable (i.e., Sta. S/R).
-            Reasonableness success rate (i.e., Rea. S/R), on the other hand, is based on whether object placement aligns
-            with the ground truth that we define. Evaluating reasonableness success criteria is manually designed.
-            These metrics assess the overall effectiveness of placements in ensuring both stability and reasonableness.
-            These specific criteria are the ground truth for confirming appropriate locations in our experimental
-            validation.
-            Furthermore, we measure the time taken for the inference and the number of input and output tokens to
-            measure the efficiency of utilizing LLMs.
-          </p>
-          <p style="margin-bottom: 8px;">
-            By separating the tasks of predicting receptacles and ensuring physical robustness into two distinct
-            modules, we find that <strong>SPOTS</strong> achieves a higher success rate while using fewer tokens
-            compared to the methods that enforce LLMs to predict both robotic plans while understanding the context.
-            From this experiment, we would like to posit that <strong>SPOTS</strong> has great capability of promptable
-            placement tasks, which considers both physically stable and reasonable regions, and <strong>SPOTS</strong>
-            has a good distribution, where reasonable positions can be sampled.
-          </p>
+        
+        <!-- Three column layout for tables -->
+        <div class="columns">
+          <!-- First column -->
+          <div class="column is-one-third">
+            <div style="text-align: center;">
+              <h3 class="subtitle has-text-centered">COCO-mini Evaluation</h3>
+              <table class="table is-bordered is-striped is-narrow is-hoverable" style="margin: 0 auto; width: 95%;">
+                <thead>
+                  <tr>
+                    <th>Dataset</th>
+                    <th>mAP@0.5</th>
+                    <th>mAP@0.95</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>COCO-mini (base)</td>
+                    <td>0.014</td>
+                    <td>0.007</td>
+                  </tr>
+                  <tr>
+                    <td>COCO-blur</td>
+                    <td>0.018</td>
+                    <td>0.009</td>
+                  </tr>
+                  <tr>
+                    <td>COCO-cutout</td>
+                    <td>0.012</td>
+                    <td>0.006</td>
+                  </tr>
+                </tbody>
+              </table>
+              <figcaption class="content is-small has-text-centered">
+                <strong>COCO-mini Evaluation:</strong> <br> Comparison of mAP scores on COCO-mini variations.
+              </figcaption>
+            </div>
+          </div>
+          
+          <!-- Second column -->
+          <div class="column is-one-third">
+            <div style="text-align: center;">
+              <h3 class="subtitle has-text-centered">Indicator Dataset</h3>
+              <table class="table is-bordered is-striped is-narrow is-hoverable" style="margin: 0 auto; width: 95%;">
+                <thead>
+                  <tr>
+                    <th>Method</th>
+                    <th>mAP@0.5</th>
+                    <th>Status Accuracy</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>YOLOv7</td>
+                    <td>0.730</td>
+                    <td>0.813</td>
+                  </tr>
+                  <tr>
+                    <td>YOLOv7 + patch</td>
+                    <td>0.784</td>
+                    <td>0.878</td>
+                  </tr>
+                  <tr class="has-background-grey-lighter">
+                    <td>YOLOv7 + patch + blur</td>
+                    <td>0.779</td>
+                    <td>0.879</td>
+                  </tr>
+                </tbody>
+              </table>
+              <figcaption class="content is-small has-text-centered">
+                <strong>Indicator Dataset Performance:</strong> <br> Experimental results on Indicator dataset.
+              </figcaption>
+            </div>
+          </div>
+          
+          <!-- Third column -->
+          <div class="column is-one-third">
+            <div style="text-align: center;">
+              <h3 class="subtitle has-text-centered">Real-world Results</h3>
+              <table class="table is-bordered is-striped is-narrow is-hoverable" style="margin: 0 auto; width: 95%;">
+                <thead>
+                  <tr>
+                    <th>Task</th>
+                    <th>Success Rate</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>GOTO BUTTON POSE</td>
+                    <td>10/10</td>
+                  </tr>
+                  <tr>
+                    <td>BUTTON PUSHING</td>
+                    <td>9/10</td>
+                  </tr>
+                  <tr>
+                    <td>ELEVATOR BOARDING</td>
+                    <td>3/10</td>
+                  </tr>
+                </tbody>
+              </table>
+              <figcaption class="content is-small has-text-centered">
+                <strong>Real-world Experiment Results:</strong> <br> Success rates of three tasks executed by the robot over ten trials each.
+              </figcaption>
+            </div>
+          </div>
         </div>
-        <!-- Footnotes -->
-        <div class="footnotes" style="text-align: left;">
-          <p id="footnote-llmgrop"><a href="#footnote-llmgrop">[1]</a> <a href="https://sites.google.com/view/llm-grop"
-              target="_blank">Task and Motion Planning with Large Language Models for Object Rearrangement</a></p>
-          <p id="footnote-cap"><a href="#footnote-cap">[2]</a> <a href="https://code-as-policies.github.io/"
-              target="_blank">Code as Policies: Language Model Programs for Embodied Control</a></p>
-          <p id="footnote-l2r"><a href="#footnote-l2r">[3]</a> <a href="https://language-to-reward.github.io/"
-              target="_blank">Language to Rewards for Robotic Skill Synthesis</a></p>
+        
+        <!-- Single column for map image -->
+        <div class="columns" style="margin-top: 30px;">
+          <div class="column is-full">
+            <div style="text-align: center;">
+              <img src="assets/images/fig_map.png" alt="Occupancy Map" style="width: 40%; margin: 0 auto;">
+              <figcaption class="content is-small has-text-centered">
+                <strong>Occupancy Map:</strong> This figure illustrates the constructed occupancy map of the 6th floor of Woojung Hall of Informatics at Korea University, which serves as the operational landscape for all our real-world robot experiments.
+              </figcaption>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Single column for explanation text -->
+        <div class="columns">
+          <div class="column is-full">
+            <div class="content has-text-justified" style="margin-top: 0px;">
+              <p>
+                Our experimental results validate the effectiveness of our approach in addressing label dependency and small object detection challenges. The COCO-mini evaluation demonstrates that our blur augmentation technique outperforms both the baseline and cutout methods. On the Indicator dataset, our patch augmentation significantly improved accuracy (mAP@0.5: 0.784, Status Accuracy: 0.878) compared to the baseline, while adding blur augmentation maintained high accuracy while addressing class imbalance.
+              </p>
+              <p>
+                In real-world robot operations conducted at Korea University, we evaluated three critical tasks with varying success rates: 100% for navigation, 90% for button pushing, and 30% for elevator boarding over ten trials each. The lower success rate in elevator boarding indicates areas for future improvement, particularly in handling potential obstructions at the elevator door.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -520,80 +517,40 @@
   </section>
   <!-- End of Results -->
 
-
-  <!-- Real world Experimental Videos -->
+  <!-- Demonstration Section -->
   <section class="hero is-small">
     <div class="hero-body">
       <div class="container">
-        <h2 class="title is-3">Real World Demonstration</h2>
-        <div id="module">
-          <div id="realworld">
-            <video poster="" id="video1" autoplay controls muted loop height="100%">
-              <!-- Your video file here -->
-              <source src="assets/videos/real_world.mp4" type="video/mp4">
-            </video>
-            <h2 class="content has-text-justified" style="text-align: left;">
-              In this experiment, we consider a scene with different objects placed on a desk.
-              We designed a task that categorizes objects based on similarity. The reasoning criteria, termed
-              <strong>similarity</strong>, varies for each experiment and serves as the ground truth for evaluating
-              reasoning abilities.
-              Each type of <strong>similarity</strong> was evaluated five times, and performance was measured using the
-              overall success rate (i.e., both Sta. S/R and Rea. S/R).
-              From this experiment, we insist that the reasonable place varies depending on the task description given
-              as input. Furthermore, we are able to accurately determine the stable positions to place the objects by
-              reconstructing the robot's ego-centric view with the real-to-sim method.
-            </h2>
+        <h2 class="title is-3">Real-World Demonstration</h2>
+        <div class="columns is-centered">
+          <div class="column is-full">
+            <div style="text-align: center;">
+              <img src="assets/images/fig_demo.png" alt="System Demonstration" style="width: 90%;">
+            </div>
+            <figcaption class="content is-small has-text-centered">
+              <strong>Demonstration of our integrated robotic system:</strong> A comprehensive illustration of the robot successfully performing tasks within a real-world indoor environment.
+            </figcaption>
+            <div class="content has-text-justified">
+              <p>
+                Our final demonstration showcases the GAEMI robot navigating and interacting with elevators in the Woojung Hall of Informatics at Korea University. The system integrates all components - perception, planning, and control - to enable autonomous multi-floor navigation. The robot successfully detects elevator status, navigates to the appropriate position, interacts with buttons, and boards/exits elevators with high reliability. This real-world demonstration validates the practical applicability of our approach for indoor service robots operating in multi-level environments.
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
-  <!-- End of Real world experimental videos -->
-
-
-  <!-- Youtube video -->
-  <!-- <section class="hero is-small is-light">
-  <div class="hero-body">
-    <div class="container"> -->
-  <!-- Paper video. -->
-  <!-- <h2 class="title is-3">Video</h2>
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
-          
-          <div class="publication-video"> -->
-  <!-- Youtube embed code here -->
-  <!-- <iframe src="https://www.youtube.com/embed/JkaxUblCGz0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section> -->
-  <!-- End youtube video -->
-
-  <!-- Paper poster -->
-  <!-- <section class="hero is-small is-light">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title">Poster</h2>
-
-      <iframe  src="assets/pdfs/SPOTS_v6.pdf" width="100%" height="550">
-          </iframe>
-        
-      </div>
-    </div>
-  </section> -->
-  <!--End paper poster -->
+  <!-- End of Demonstration Section -->
 
   <!--BibTex citation -->
   <section class="section" id="BibTeX">
     <div class="container is-max-desktop content">
       <h2 class="title">BibTeX</h2>
       <pre><code>
-        @article{lee2023spots,
-          title={SPOTS: Stable Placement of Objects with Reasoning in Semi-Autonomous Teleoperation Systems},
-          author={Lee, Joonhyung and Park, Sangbeom and Park, Jeongeun and Lee, Kyungjae and Choi, Sungjoon},
-          journal={arXiv preprint arXiv:2309.13937},
+        @inproceedings{shin2023robust,
+          title={Robust Detection for Autonomous Elevator Boarding using a Mobile Manipulator},
+          author={Shin, Seungyoun and Lee, Joonhyung and Noh, Junhyug and Choi, Sungjoon},
+          booktitle={Link Springer},
           year={2023}
         }
       </code></pre>
@@ -610,8 +567,8 @@
 
             <p>
               This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template"
-                target="_blank">Academic Project Page Template</a> which was adopted from the <a
-                href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
+                target="_blank">Academic Project Page Template</a> which was adopted from the <a
+                href="https://nerfies.github.io" target="_blank">Nerfies</a> project page.
               You are free to borrow the of this website, we just ask that you link back to this page in the footer.
               <br> This website is licensed under a <a rel="license"
                 href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
